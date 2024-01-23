@@ -2,18 +2,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "0. Segger-RTT",
-            "type": "shell",
-            "command": "C:/'Program Files (x86)'/SEGGER/JLink/JLinkRTTClient.exe",
-            "args": [],
-            "problemMatcher": [],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
-        },
-        {
-            "label": "1. Reload Cmake Project (Orion675FS)",
+            "label": "Reload Cmake Project",
             "type": "shell",
             "command": "clear ; Remove-Item -Recurse ./build ; mkdir ./build ; cd ./build ; cmake -G \"Ninja\" -DOPEN_LOG_OMN_DEBUG=ON -DCMAKE_BUILD_TYPE=Debug ..",
             "options": {
@@ -25,7 +14,7 @@
             }
         },
         {
-            "label": "2. Build (Debug)",
+            "label": "Build (Debug)",
             "type": "shell",
             "command": "clear ; cd ./build ; cmake -G \"Ninja\" -DOPEN_LOG_OMN_DEBUG=ON .. ; ninja -j8",
             "options": {
@@ -37,7 +26,7 @@
             }
         },
         {
-            "label": "烧录",
+            "label": "Program",
             "type": "shell",
             "command": "openocd -f interface/stlink-v2.cfg -f target/stm32f4x.cfg -c 'program build/project.hex verify reset exit'",
             "group": {
