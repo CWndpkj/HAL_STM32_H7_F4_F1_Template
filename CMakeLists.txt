@@ -5,7 +5,7 @@ SET(PATH_WORKSPACE_ROOT ${CMAKE_SOURCE_DIR})
 SET (RROJECT_NAME "project")
 SET(PROJECT_VERSION 1.0)
 #设置平台类型
-SET (PALTFORM "cortex_m4")
+SET (PALTFORM "cortex_m7")
 #可通过修改下面的值爱修改输出的文件名
 SET(OUTPUT_EXE_NAME ${RROJECT_NAME})
 
@@ -35,15 +35,15 @@ MESSAGE(STATUS "****** Building project: ${CMAKE_PROJECT_NAME} ,Version: ${CMAKE
 
 if(${PALTFORM} STREQUAL "cortex_m7")
     #指定链接文件
-    SET(LINKER_SCRIPT "${PATH_WORKSPACE_ROOT}/toolchain/linkscripts/stm32h750xbh6_external_flash.ld")
+    SET(LINKER_SCRIPT "${PATH_WORKSPACE_ROOT}/toolchain/linkscripts/STM32H7/stm32h750xbh6_external_flash.ld")
     #指定启动文件
-    SET(STARTUP_ASM "${PATH_WORKSPACE_ROOT}/System/STM32H7/src/startup_stm32h750xx.s")
+    SET(STARTUP_ASM "${PATH_WORKSPACE_ROOT}/System/STM32H7/StartUp/startup_stm32h750xx.s")
 elseif(${PALTFORM} STREQUAL "cortex_m4")
-    SET(LINKER_SCRIPT "${PATH_WORKSPACE_ROOT}/toolchain/linkscripts/STM32F407ZGTx_FLASH.ld")
-    SET(STARTUP_ASM "${PATH_WORKSPACE_ROOT}/System/STM32F4/src/startup_stm32f407xx.s")
+    SET(LINKER_SCRIPT "${PATH_WORKSPACE_ROOT}/toolchain/linkscripts/STM32F4/STM32F407ZGTx_FLASH.ld")
+    SET(STARTUP_ASM "${PATH_WORKSPACE_ROOT}/System/STM32F4/StartUp/startup_stm32f407xx.s")
 elseif(${PALTFORM} STREQUAL "cortex_m3")
-    SET(LINKER_SCRIPT "${PATH_WORKSPACE_ROOT}/toolchain/linkscripts/STM32F103XB_FLASH.ld")
-    SET(STARTUP_ASM "${PATH_WORKSPACE_ROOT}/System/STM32F1/src/startup_stm32f103xb.s")
+    SET(LINKER_SCRIPT "${PATH_WORKSPACE_ROOT}/toolchain/linkscripts/STM32F1/STM32F103XB_FLASH.ld")
+    SET(STARTUP_ASM "${PATH_WORKSPACE_ROOT}/System/STM32F1/StartUp/startup_stm32f103xb.s")
 elseif(${PALTFORM} STREQUAL "cortex_m0")
     #SET(LINKER_SCRIPT "${PATH_WORKSPACE_ROOT}/toolchain/linkscripts/stm32h750xbh6_external_flash.ld")
     #SET(STARTUP_ASM "${PATH_WORKSPACE_ROOT}/System/startup_stm32h750xx.s")
@@ -58,6 +58,7 @@ INCLUDE_DIRECTORIES("${PATH_WORKSPACE_ROOT}/Driver/CMSIS/Core/Include")
 # 3、预定义宏；
 # ###############################################
 
+# TODO:采用更灵活的方式来管理平台类型以支持更多的MCU型号，以及不同的HSE频率
 #平台相关定义
 if(${PALTFORM} STREQUAL "cortex_m7")
     ADD_DEFINITIONS(-DSTM32H750xx -DHSE_VALUE=25000000)

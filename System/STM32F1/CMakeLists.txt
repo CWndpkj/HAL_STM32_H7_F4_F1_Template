@@ -3,10 +3,10 @@ TARGET_SOURCES(
     ${PROJECT_NAME}
     PRIVATE
     #Begin target source
-    ${CMAKE_CURRENT_LIST_DIR}/system_stm32f1xx.c
-    ${CMAKE_CURRENT_LIST_DIR}/sys.c
-    ${CMAKE_CURRENT_LIST_DIR}/syscalls.c
-    ${CMAKE_CURRENT_LIST_DIR}/stm32f1xx_it.c
+    ${CMAKE_CURRENT_LIST_DIR}/src/system_stm32f1xx.c
+    ${CMAKE_CURRENT_LIST_DIR}/src/sys.c
+    ${CMAKE_CURRENT_LIST_DIR}/src/syscalls.c
+    ${CMAKE_CURRENT_LIST_DIR}/src/stm32f1xx_it.c
     #end target sorurce
 )
 
