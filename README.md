@@ -1,6 +1,6 @@
 # STM32F1,F4,H7_HAL_Template
 
-本项目是基于HAL库，适用于STM32F1,F4,H7平台的项目模版，主要特征如下：
+本项目是基于HAL库，适用于STM32F1,F4,H7平台的项目模版：
 
 - 使用vscode作为代码编辑器
 
