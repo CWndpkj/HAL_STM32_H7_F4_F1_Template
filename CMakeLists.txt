@@ -1,6 +1,5 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.20)
 SET(PATH_WORKSPACE_ROOT ${CMAKE_SOURCE_DIR})
-
 #设置项目的名称
 SET (RROJECT_NAME "project")
 SET(PROJECT_VERSION 1.0)
@@ -109,11 +108,12 @@ MESSAGE(STATUS "**** Build for ${CMAKE_BUILD_TYPE} ****")
 #############################################################
 
 #设置库的输出路径
-SET(LIBRARY_OUTPUT_PATH "${CMAKE_WORKSPACE_ROOT}/build/lib_obj")
 
-SET(ELF_FILE "${CMAKE_WORKSPACE_ROOT}/build/${OUTPUT_EXE_NAME}.elf")
-SET(HEX_FILE "${CMAKE_WORKSPACE_ROOT}/build/${OUTPUT_EXE_NAME}.hex")
-SET(BIN_FILE "${CMAKE_WORKSPACE_ROOT}/build/${OUTPUT_EXE_NAME}.bin")
+SET(LIBRARY_OUTPUT_PATH "${PATH_WORKSPACE_ROOT}/build/lib_obj")
+
+SET(ELF_FILE "${PATH_WORKSPACE_ROOT}/build/${OUTPUT_EXE_NAME}.elf")
+SET(HEX_FILE "${PATH_WORKSPACE_ROOT}/build/${OUTPUT_EXE_NAME}.hex")
+SET(BIN_FILE "${PATH_WORKSPACE_ROOT}/build/${OUTPUT_EXE_NAME}.bin")
 
 # ###################################################################
 # 6、组织公共库源文件；
