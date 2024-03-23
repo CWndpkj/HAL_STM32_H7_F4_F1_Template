@@ -165,6 +165,7 @@ ADD_SUBDIRECTORY(${PATH_WORKSPACE_ROOT}/HAL ${LIBRARY_OUTPUT_PATH}/HAL)
 ADD_SUBDIRECTORY(${PATH_WORKSPACE_ROOT}/LL ${LIBRARY_OUTPUT_PATH}/LL)
 ADD_SUBDIRECTORY(${PATH_WORKSPACE_ROOT}/3rdparty ${LIBRARY_OUTPUT_PATH}/3rdparty)
 ADD_SUBDIRECTORY(${PATH_WORKSPACE_ROOT}/Common/ ${LIBRARY_OUTPUT_PATH}/Common)
+ADD_SUBDIRECTORY(${PATH_WORKSPACE_ROOT}/Tests ${LIBRARY_OUTPUT_PATH}/Tests)
 
 # ###################################################################
 # 9、生成 hex 和 bin 文件
@@ -190,6 +191,3 @@ ADD_CUSTOM_COMMAND(
     #COMMAND ${OBJDUMP} -h "${OUTPUT_EXE_NAME}.elf"
     #COMMENT "objdum result"
 )
-
-#阻止生成cmake_install.cmake文件，否则在未指定安装路径的情况下，默认的安装路径没有权限写入，将导致报错
-set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY true)
