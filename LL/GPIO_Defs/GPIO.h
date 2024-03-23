@@ -1,10 +1,7 @@
-#ifndef __GPIO_PIN_DEF
-#define __GPIO_PIN_DEF
+//针对自己的开发板对应的GPIO连接
 
-/**
- * @brief 此文件宏定义本开发板的所有板上外设的引脚对应的GPIO
- * 
- */
+#ifdef CUSTOM_STM32F407
+
 #define SW4_Pin GPIO_PIN_1
 #define SW4_GPIO_Port GPIOE
 #define SW5_Pin GPIO_PIN_2
@@ -68,4 +65,5 @@
 #define QUADSPI_BK1_IO3_AF          GPIO_AF9_QUADSPI             // QUADSPI_BK1_IO3 IO口复用
 #define GPIO_QUADSPI_BK1_IO3_ENABLE __HAL_RCC_GPIOF_CLK_ENABLE() // QUADSPI_BK1_IO3 引脚时钟
 
-#endif // __GPIO_PIN_DEF
+#endif
+
