@@ -1,5 +1,5 @@
 //针对自己的开发板对应的GPIO连接
-
+//TODO:使用宏定义列出硬件与GPIO的连接关系
 #ifdef CUSTOM_STM32F407
 
 #define SW4_Pin GPIO_PIN_1
