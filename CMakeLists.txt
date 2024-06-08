@@ -1,54 +1,26 @@
+SET(CMAKE_SYSTEM_NAME Generic)
+SET(CMAKE_SYSTEM_VERSION 1)
 CMAKE_MINIMUM_REQUIRED(VERSION 3.20)
 SET(PATH_WORKSPACE_ROOT ${CMAKE_SOURCE_DIR})
 #设置项目的名称
-SET (RROJECT_NAME "project")
+SET(RROJECT_NAME "project")
 SET(PROJECT_VERSION 1.0)
-#设置平台类型
-SET (PALTFORM "cortex_m7")
 #可通过修改下面的值爱修改输出的文件名
 SET(OUTPUT_EXE_NAME ${RROJECT_NAME})
+include("CMake/toolchain/arm-none-eabi.cmake")
 
-if(${PALTFORM} STREQUAL "cortex_m7")
-    INCLUDE("${PATH_WORKSPACE_ROOT}/toolchain/cmake/cortex_m7.cmake")
-elseif(${PALTFORM} STREQUAL "cortex_m4")
-    INCLUDE("${PATH_WORKSPACE_ROOT}/toolchain/cmake/cortex_m4.cmake")
-elseif(${PALTFORM} STREQUAL "cortex_m3")
-    INCLUDE("${PATH_WORKSPACE_ROOT}/toolchain/cmake/cortex_m3.cmake")
-elseif(${PALTFORM} STREQUAL "cortex_m0")
-    INCLUDE("${PATH_WORKSPACE_ROOT}/toolchain/cmake/cortex_m0.cmake")
-else()
-    MESSAGE(FATAL_ERROR "PALTFORM is not supported")
-endif()
+PROJECT(
+        ${RROJECT_NAME}
+        VERSION ${PROJECT_VERSION}
+        LANGUAGES C CXX ASM
+)
 
+include("target.cmake")
 # #################################################################
 # 1、工程信息
 # #################################################################
-PROJECT(
-    ${RROJECT_NAME}
-    VERSION ${PROJECT_VERSION}
-    LANGUAGES C CXX ASM
-)
 
-MESSAGE(STATUS "****** Building project: ${CMAKE_PROJECT_NAME} ,Version: ${CMAKE_PROJECT_VERSION}******")
-
-
-if(${PALTFORM} STREQUAL "cortex_m7")
-    #指定链接文件
-    SET(LINKER_SCRIPT "${PATH_WORKSPACE_ROOT}/toolchain/linkscripts/STM32H7/stm32h750xbh6_external_flash.ld")
-    #指定启动文件
-    SET(STARTUP_ASM "${PATH_WORKSPACE_ROOT}/System/STM32H7/StartUp/startup_stm32h750xx.s")
-elseif(${PALTFORM} STREQUAL "cortex_m4")
-    SET(LINKER_SCRIPT "${PATH_WORKSPACE_ROOT}/toolchain/linkscripts/STM32F4/STM32F407ZGTx_FLASH.ld")
-    SET(STARTUP_ASM "${PATH_WORKSPACE_ROOT}/System/STM32F4/StartUp/startup_stm32f407xx.s")
-elseif(${PALTFORM} STREQUAL "cortex_m3")
-    SET(LINKER_SCRIPT "${PATH_WORKSPACE_ROOT}/toolchain/linkscripts/STM32F1/STM32F103XB_FLASH.ld")
-    SET(STARTUP_ASM "${PATH_WORKSPACE_ROOT}/System/STM32F1/StartUp/startup_stm32f103xb.s")
-elseif(${PALTFORM} STREQUAL "cortex_m0")
-    #SET(LINKER_SCRIPT "${PATH_WORKSPACE_ROOT}/toolchain/linkscripts/stm32h750xbh6_external_flash.ld")
-    #SET(STARTUP_ASM "${PATH_WORKSPACE_ROOT}/System/startup_stm32h750xx.s")
-else()
-    MESSAGE(FATAL_ERROR "PALTFORM is not supported")
-endif()
+MESSAGE(STATUS "*** Building project: ${CMAKE_PROJECT_NAME} ,Version: ${CMAKE_PROJECT_VERSION}***")
 
 #项目底层公共头文件路径
 INCLUDE_DIRECTORIES("${PATH_WORKSPACE_ROOT}/Driver/CMSIS/Core/Include")
@@ -59,25 +31,6 @@ INCLUDE_DIRECTORIES("${PATH_WORKSPACE_ROOT}/Driver/CMSIS/Core/Include")
 
 # TODO:采用更灵活的方式来管理平台类型以支持更多的MCU型号，以及不同的HSE频率
 #平台相关定义
-if(${PALTFORM} STREQUAL "cortex_m7")
-    ADD_DEFINITIONS(-DSTM32H750xx -DHSE_VALUE=25000000)
-elseif(${PALTFORM} STREQUAL "cortex_m4")
-    ADD_DEFINITIONS(-DSTM32F407xx -DHSE_VALUE=8000000)
-elseif(${PALTFORM} STREQUAL "cortex_m3")
-    ADD_DEFINITIONS(-DSTM32F103xB -DHSE_VALUE=8000000)
-elseif(${PALTFORM} STREQUAL "cortex_m0")
-    ADD_DEFINITIONS(-DSTM32??-DHSE_VALUE=8000000)
-else()
-    MESSAGE(FATAL_ERROR "PALTFORM is not supported")
-endif()
-ADD_DEFINITIONS(
-    -DUSE_HAL_DRIVER
-    #-DUSING_NON_RTOS=0 # 不使用 RTOS
-    #-DUSING_FREERTOS=1 # 使用 FreeRTOS
-    #-DUSING_THREADX=2 # 使用 Threadx
-    #-DUSING_RTOS=USING_NON_RTOS # 选择使用的 RTOS
-)
-
 
 # ##################################################
 # 4、差异化构建配置；
@@ -87,21 +40,21 @@ ADD_DEFINITIONS(
 OPTION(OPEN_LOG_OMN_DEBUG "Open log output for debug" OFF)
 
 #优化级别的差异配置
-IF("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
+IF ("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
     ADD_DEFINITIONS()
-ELSEIF("${CMAKE_BUILD_TYPE}" STREQUAL "RelWithDebInfo")
+ELSEIF ("${CMAKE_BUILD_TYPE}" STREQUAL "RelWithDebInfo")
     ADD_DEFINITIONS()
-ELSEIF("${CMAKE_BUILD_TYPE}" STREQUAL "MinSizeRel")
+ELSEIF ("${CMAKE_BUILD_TYPE}" STREQUAL "MinSizeRel")
     ADD_DEFINITIONS()
-ELSE()
-    IF(OPEN_LOG_OMN_DEBUG)
-    ADD_DEFINITIONS(-DLOG_BACKEND=LOG_BACKEND_NONE)
-    ELSE()
-    ADD_DEFINITIONS(-DLOG_BACKEND=LOG_BACKEND_NONE)
-    ENDIF()
-ENDIF()
+ELSE ()
+    IF (OPEN_LOG_OMN_DEBUG)
+        ADD_DEFINITIONS(-DLOG_BACKEND=LOG_BACKEND_NONE)
+    ELSE ()
+        ADD_DEFINITIONS(-DLOG_BACKEND=LOG_BACKEND_NONE)
+    ENDIF ()
+ENDIF ()
 
-MESSAGE(STATUS "**** Build for ${CMAKE_BUILD_TYPE} ****")
+MESSAGE(STATUS "*** Build for ${CMAKE_BUILD_TYPE} ***")
 
 # ###########################################################
 # 5、设置文件输出路径；
@@ -109,7 +62,7 @@ MESSAGE(STATUS "**** Build for ${CMAKE_BUILD_TYPE} ****")
 
 #设置库的输出路径
 
-SET(LIBRARY_OUTPUT_PATH "${PATH_WORKSPACE_ROOT}/build/lib_obj")
+SET(LIBRARY_OUTPUT_PATH "${PATH_WORKSPACE_ROOT}/build/obj")
 
 SET(ELF_FILE "${PATH_WORKSPACE_ROOT}/build/${OUTPUT_EXE_NAME}.elf")
 SET(HEX_FILE "${PATH_WORKSPACE_ROOT}/build/${OUTPUT_EXE_NAME}.hex")
@@ -124,70 +77,59 @@ SET(BIN_FILE "${PATH_WORKSPACE_ROOT}/build/${OUTPUT_EXE_NAME}.bin")
 # 7、组织用户源文件；
 # ####################################################################
 
-#用户源码
-INCLUDE_DIRECTORIES(
-    ${PATH_WORKSPACE_ROOT}/User/include
-)
-
-SET(USER_SOURCE
-    ${PATH_WORKSPACE_ROOT}/User/src/main.c
-)
-
 # #####################################################################
 # 8、编译、连接，生成可执行文件
 # #####################################################################
 
 # 定义连接器参数； --gc-sections：指示链接器去掉不用的 section
 #Og -Wall -g --specs=nosys.specs --specs=nano.specs -u _printf_float -ffunction-sections -fdata-sections
-SET(CMAKE_EXE_LINKER_FLAGS 
-    "${CMAKE_EXE_LINKER_FLAGS} -T ${LINKER_SCRIPT} -Wl,-Map=${PROJECT_BINARY_DIR}/${OUTPUT_EXE_NAME}.map -Wl,--gc-sections,--print-memory-usage"
+SET(CMAKE_EXE_LINKER_FLAGS
+        "${CMAKE_EXE_LINKER_FLAGS} -T ${LINKER_SCRIPT} -Wl,-Map=${PROJECT_BINARY_DIR}/${OUTPUT_EXE_NAME}.map -Wl,--gc-sections,--print-memory-usage"
 )
 #生成可执行文件
 ADD_EXECUTABLE(${PROJECT_NAME} ${COMMON_SERVICES_SOURCE} ${USER_SOURCE} ${LINKER_SCRIPT} ${STARTUP_ASM})
+SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES SUFFIX ".elf")
 #添加依赖
-if(${PALTFORM} STREQUAL "cortex_m7")
-    ADD_SUBDIRECTORY(${PATH_WORKSPACE_ROOT}/Driver/STM32H7xx_HAL_Driver/ ${LIBRARY_OUTPUT_PATH}/Driver)
-    ADD_SUBDIRECTORY(${PATH_WORKSPACE_ROOT}/System/STM32H7/ ${LIBRARY_OUTPUT_PATH}/System)
-elseif(${PALTFORM} STREQUAL "cortex_m4")
-    ADD_SUBDIRECTORY(${PATH_WORKSPACE_ROOT}/Driver/STM32F4xx_HAL_Driver/ ${LIBRARY_OUTPUT_PATH}/Driver)
-    ADD_SUBDIRECTORY(${PATH_WORKSPACE_ROOT}/System/STM32F4/ ${LIBRARY_OUTPUT_PATH}/System)
-elseif(${PALTFORM} STREQUAL "cortex_m3")
+if (${PLATFORM} STREQUAL "cortex_m7")
+    ADD_SUBDIRECTORY(${PATH_WORKSPACE_ROOT}/Driver/STM32H7xx_HAL_Driver ${LIBRARY_OUTPUT_PATH}/Driver)
+    ADD_SUBDIRECTORY(${PATH_WORKSPACE_ROOT}/Core/STM32H7 ${LIBRARY_OUTPUT_PATH}/Core)
+elseif (${PLATFORM} STREQUAL "cortex_m4")
+    ADD_SUBDIRECTORY(${PATH_WORKSPACE_ROOT}/Driver/STM32F4xx_HAL_Driver ${LIBRARY_OUTPUT_PATH}/Driver)
+    ADD_SUBDIRECTORY(${PATH_WORKSPACE_ROOT}/Core/STM32F4 ${LIBRARY_OUTPUT_PATH}/Core)
+elseif (${PLATFORM} STREQUAL "cortex_m3")
     ADD_SUBDIRECTORY(${PATH_WORKSPACE_ROOT}/Driver/STM32F1xx_HAL_Driver/ ${LIBRARY_OUTPUT_PATH}/Driver)
-    ADD_SUBDIRECTORY(${PATH_WORKSPACE_ROOT}/System/STM32F1/ ${LIBRARY_OUTPUT_PATH}/System)
-elseif(${PALTFORM} STREQUAL "cortex_m0")
+    ADD_SUBDIRECTORY(${PATH_WORKSPACE_ROOT}/Core/STM32F1 ${LIBRARY_OUTPUT_PATH}/Core)
+elseif (${PLATFORM} STREQUAL "cortex_m0")
     #ADD_SUBDIRECTORY(${PATH_WORKSPACE_ROOT}/Driver/STM32H7xx_HAL_Driver/ ${LIBRARY_OUTPUT_PATH}/Driver)
     #ADD_SUBDIRECTORY(${PATH_WORKSPACE_ROOT}/System/ ${LIBRARY_OUTPUT_PATH}/System)
-else()
-    MESSAGE(FATAL_ERROR "PALTFORM is not supported")
-endif()
-
-ADD_SUBDIRECTORY(${PATH_WORKSPACE_ROOT}/HAL ${LIBRARY_OUTPUT_PATH}/HAL)
-ADD_SUBDIRECTORY(${PATH_WORKSPACE_ROOT}/LL ${LIBRARY_OUTPUT_PATH}/LL)
-ADD_SUBDIRECTORY(${PATH_WORKSPACE_ROOT}/3rdparty ${LIBRARY_OUTPUT_PATH}/3rdparty)
-ADD_SUBDIRECTORY(${PATH_WORKSPACE_ROOT}/Common/ ${LIBRARY_OUTPUT_PATH}/Common)
-ADD_SUBDIRECTORY(${PATH_WORKSPACE_ROOT}/Tests ${LIBRARY_OUTPUT_PATH}/Tests)
-
+else ()
+    MESSAGE(FATAL_ERROR "PLATFORM is not supported")
+endif ()
+ADD_SUBDIRECTORY(${PATH_WORKSPACE_ROOT}/User ${LIBRARY_OUTPUT_PATH}/User)
+ADD_SUBDIRECTORY(${PATH_WORKSPACE_ROOT}/BSP ${LIBRARY_OUTPUT_PATH}/BSP)
+ADD_SUBDIRECTORY(${PATH_WORKSPACE_ROOT}/Application ${LIBRARY_OUTPUT_PATH}/Application)
+ADD_SUBDIRECTORY(${PATH_WORKSPACE_ROOT}/Middlewares/3rdparty ${LIBRARY_OUTPUT_PATH}/Middlewares/3rdparty)
 # ###################################################################
 # 9、生成 hex 和 bin 文件
 # ###################################################################
 ADD_CUSTOM_COMMAND(
-    TARGET "${PROJECT_NAME}"
-    POST_BUILD
-    #生成.hex .bin
-    COMMAND ${OBJCOPY} -Obinary "${PROJECT_NAME}" "${OUTPUT_EXE_NAME}.bin"
-    COMMAND ${OBJCOPY} -Oihex "${PROJECT_NAME}" "${OUTPUT_EXE_NAME}.hex"
-    COMMENT "Building ${OUTPUT_EXE_NAME}.bin and ${OUTPUT_EXE_NAME}.hex"
-    #显示大小
-    COMMAND ${SIZE} --format=berkeley ${PROJECT_NAME}
-    COMMENT "Invoking:Cross ARM GNU Print Size"
+        TARGET "${PROJECT_NAME}"
+        POST_BUILD
+        #生成.hex .bin
+        COMMAND ${OBJCOPY} -Obinary "${PROJECT_NAME}.elf" "${OUTPUT_EXE_NAME}.bin"
+        COMMAND ${OBJCOPY} -Oihex "${PROJECT_NAME}.elf" "${OUTPUT_EXE_NAME}.hex"
+        COMMENT "Building ${OUTPUT_EXE_NAME}.bin and ${OUTPUT_EXE_NAME}.hex"
+        #显示大小
+        COMMAND ${SIZE} --format=berkeley "${PROJECT_NAME}.elf"
+        COMMENT "Invoking:Cross ARM GNU Print Size"
 
-    #转换为.elf
-    #objcopy -I ihex input.hex -O elf32-littlearm output.elf
-    COMMAND ${OBJCOPY} -I ihex "${PROJECT_NAME}" -O elf32-littlearm "${OUTPUT_EXE_NAME}.elf"
-    COMMENT "hex to elf"
+        #转换为.elf
+        #objcopy -I ihex input.hex -O elf32-littlearm output.elf
+        #        COMMAND ${OBJCOPY} -I ihex "${PROJECT_NAME}" -O elf32-littlearm "${OUTPUT_EXE_NAME}.elf"
+        #        COMMENT "hex to elf"
 
-    #显示.elf的文件信息
-    #objdump -h output.elf
-    #COMMAND ${OBJDUMP} -h "${OUTPUT_EXE_NAME}.elf"
-    #COMMENT "objdum result"
+        #        显示.elf的文件信息
+        #        objdump -h output.elf
+        #        COMMAND ${OBJDUMP} -h "${OUTPUT_EXE_NAME}.elf"
+        #        COMMENT "objdum result"
 )

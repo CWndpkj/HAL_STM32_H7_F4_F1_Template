@@ -9,9 +9,9 @@ message(STATUS "include directories:${INCLUDE_DIRS}")
 
 file(GLOB_RECURSE ADD_SRCS "${CMAKE_CURRENT_SOURCE_DIR}/*.c"
         "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
+
 list(APPEND SRCS ${ADD_SRCS})
-list(FILTER SRCS EXCLUDE REGEX "._template\\.c$")
-message(STATUS "add srcs:${SRCS}")
+message(STATUS "add srcs:${ADD_SRCS}")
 TARGET_SOURCES(
         ${PROJECT_NAME}
         PRIVATE

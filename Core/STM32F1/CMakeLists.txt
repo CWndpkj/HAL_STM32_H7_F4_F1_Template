@@ -1,3 +1,4 @@
+MESSAGE(STATUS "current directory:${CMAKE_CURRENT_SOURCE_DIR}")
 # 要连接到构建目标的源文件；
 file(GLOB ALL_SUB_DIRS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*")
 foreach (SUB_DIR ${ALL_SUB_DIRS})
