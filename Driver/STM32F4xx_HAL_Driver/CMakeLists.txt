@@ -11,6 +11,7 @@ file(GLOB_RECURSE ADD_SRCS "${CMAKE_CURRENT_SOURCE_DIR}/*.c"
         "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 list(APPEND SRCS ${ADD_SRCS})
 list(FILTER SRCS EXCLUDE REGEX "._template\\.c$")
+list(FILTER SRCS EXCLUDE REGEX "._ll_(.*).c$")
 message(STATUS "add srcs:${SRCS}")
 TARGET_SOURCES(
         ${PROJECT_NAME}

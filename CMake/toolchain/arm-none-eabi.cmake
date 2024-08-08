@@ -52,11 +52,11 @@ SET(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 MESSAGE(STATUS "getting gcc system include path...")
 execute_process(
         COMMAND echo |
-        COMMAND arm-none-eabi-gcc.exe -E -Wp,-v -
+        #TODO:windows and linux suffix differece
+        COMMAND arm-none-eabi-gcc -E -Wp,-v -
         ERROR_VARIABLE STDERR
 )
-STRING(REGEX MATCH "#include \"...\" search starts here:(.*)#include <...> search starts here:"
-        MATCHED_CONTENT ${STDERR})
+STRING(REGEX MATCH "#include \"...\" search starts here:(.*)#include <...> search starts here:" MATCHED_CONTENT ${STDERR})
 STRING(REPLACE "\\" "/" SYS_INCLUDE_DIRS ${CMAKE_MATCH_1})
 STRING(REPLACE "\n" ";" SYS_INCLUDE_DIRS ${SYS_INCLUDE_DIRS})
 foreach (INCLUDE_PATH ${SYS_INCLUDE_DIRS})
