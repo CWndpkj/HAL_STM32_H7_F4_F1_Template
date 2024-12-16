@@ -1,5 +1,5 @@
 #设置平台类型
-SET(PLATFORM "cortex_m7")
+SET(PLATFORM "cortex_m4")
 if (${PLATFORM} STREQUAL "cortex_m7")
     INCLUDE("${CMAKE_CURRENT_SOURCE_DIR}/CMake/target/cortex_m7.cmake")
 elseif (${PLATFORM} STREQUAL "cortex_m4")
@@ -46,7 +46,7 @@ endif ()
 ADD_DEFINITIONS(
         -DUSE_HAL_DRIVER
         #-DUSING_NON_RTOS=0 # 不使用 RTOS
-        #-DUSING_FREERTOS=1 # 使用 FreeRTOS
+        -DUSING_FREERTOS=1 # 使用 FreeRTOS
         #-DUSING_THREADX=2 # 使用 Threadx
         #-DUSING_RTOS=USING_NON_RTOS # 选择使用的 RTOS
 )

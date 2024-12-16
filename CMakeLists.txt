@@ -107,8 +107,9 @@ else ()
 endif ()
 ADD_SUBDIRECTORY(${PATH_WORKSPACE_ROOT}/User ${LIBRARY_OUTPUT_PATH}/User)
 ADD_SUBDIRECTORY(${PATH_WORKSPACE_ROOT}/BSP ${LIBRARY_OUTPUT_PATH}/BSP)
-ADD_SUBDIRECTORY(${PATH_WORKSPACE_ROOT}/Application ${LIBRARY_OUTPUT_PATH}/Application)
-ADD_SUBDIRECTORY(${PATH_WORKSPACE_ROOT}/Middlewares/3rdparty ${LIBRARY_OUTPUT_PATH}/Middlewares/3rdparty)
+ADD_SUBDIRECTORY(${PATH_WORKSPACE_ROOT}/App ${LIBRARY_OUTPUT_PATH}/App)
+ADD_SUBDIRECTORY(${PATH_WORKSPACE_ROOT}/Middlewares ${LIBRARY_OUTPUT_PATH}/Middlewares)
+ADD_SUBDIRECTORY(${PATH_WORKSPACE_ROOT}/Utils ${LIBRARY_OUTPUT_PATH}/Utils)
 # ###################################################################
 # 9、生成 hex 和 bin 文件
 # ###################################################################
@@ -118,11 +119,8 @@ ADD_CUSTOM_COMMAND(
         #生成.hex .bin
         COMMAND ${OBJCOPY} -Obinary "${PROJECT_NAME}.elf" "${OUTPUT_EXE_NAME}.bin"
         COMMAND ${OBJCOPY} -Oihex "${PROJECT_NAME}.elf" "${OUTPUT_EXE_NAME}.hex"
-        COMMENT "Building ${OUTPUT_EXE_NAME}.bin and ${OUTPUT_EXE_NAME}.hex"
         #显示大小
         COMMAND ${SIZE} --format=berkeley "${PROJECT_NAME}.elf"
-        COMMENT "Invoking:Cross ARM GNU Print Size"
-
         #转换为.elf
         #objcopy -I ihex input.hex -O elf32-littlearm output.elf
         #        COMMAND ${OBJCOPY} -I ihex "${PROJECT_NAME}" -O elf32-littlearm "${OUTPUT_EXE_NAME}.elf"

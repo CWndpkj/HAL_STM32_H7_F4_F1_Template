@@ -7,6 +7,7 @@ TARGET_SOURCES(
         PRIVATE
         ${SRCS}
 )
+# 将模块头文件路径添加到目标；
 TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME}
         PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/include

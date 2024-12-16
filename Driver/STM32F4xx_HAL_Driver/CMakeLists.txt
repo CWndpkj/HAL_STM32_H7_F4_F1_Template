@@ -5,14 +5,10 @@ foreach (SUB_DIR ${ALL_SUB_DIRS})
         LIST(APPEND INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/${SUB_DIR})
     endif ()
 endforeach ()
-message(STATUS "include directories:${INCLUDE_DIRS}")
-
 file(GLOB_RECURSE ADD_SRCS "${CMAKE_CURRENT_SOURCE_DIR}/*.c"
         "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 list(APPEND SRCS ${ADD_SRCS})
 list(FILTER SRCS EXCLUDE REGEX "._template\\.c$")
-list(FILTER SRCS EXCLUDE REGEX "._ll_(.*).c$")
-message(STATUS "add srcs:${SRCS}")
 TARGET_SOURCES(
         ${PROJECT_NAME}
         PRIVATE
